@@ -11,6 +11,7 @@ barley_data_set = data.barley()
 
 
 app = dash.Dash(__name__)
+server = app.server
 # Verifying if there are na values in the dataframe
 print(barley_data_set.isnull().values.any())
 
