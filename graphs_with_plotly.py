@@ -42,40 +42,52 @@ merge_sum_yield_df_variety_site_df = pd.merge(left=barley_variety_site_df,
                                               left_on='variety', right_on='variety')
 print(merge_sum_yield_df_variety_site_df)
 
-fig1 = px.line(barley_data_set_median_df, x = 'year',
-              y = barley_data_set_median_df['Median of yield'],
-              title='Median of yield by year and site',
-              line_group= barley_data_set_median_df['site'],
-              color= barley_data_set_median_df['site'])
+fig1 = px.line(barley_data_set_median_df, x='year',
+               y=barley_data_set_median_df['Median of yield'],
+               title='Median of yield by year and site',
+               line_group=barley_data_set_median_df['site'],
+               color=barley_data_set_median_df['site'])
 
 fig2 = px.bar(merge_sum_yield_df_variety_site_df, x='variety',
-              y='sum_of_yield_by_site', color='site', title = 'Sum of yield by variety and site')
+              y='sum_of_yield_by_site', color='site', title='Sum of yield by variety and site')
 
 app.layout = html.Div(
     children=[
-        html.H1(children='Dashboard of Barley data set', style = {'text-align': 'center'}),
         html.Div(
-            children='''
+            children=[
+                html.H1(children='Dashboard of Barley data set',
+                        style={'text-align': 'center'}),
+                html.Div(
+                    children='''
             A dashboard test with plotly/dash
             ''',
-            style = {'text-align': 'center'}
-        ),
-        html.Div(
-            children = [
-            dcc.Graph(
-                id='time_series',
-                figure=fig2,
-                style={'display': 'inline-block', 'width': '50%'}
-            ),
-            dcc.Graph(
-                id = 'bar_chart',
-                figure = fig1,
-                style={'display':'inline-block', 'width': '50%'}
-            )
-            ]
+                    style={'text-align': 'center'}
+                ),
+                html.Div(
+                    children=[
+                        dcc.Graph(
+                            id='time_series',
+                            figure=fig2,
+                            style={'display': 'inline-block', 'width': '50%',
+                                    'background-color':'rgba(135, 144, 11)'
+                                    }
+                        ),
+                        dcc.Graph(
+                            id='bar_chart',
+                            figure=fig1,
+                            style={'display': 'inline-block', 'width': '50%',
+                                    'background-color':'rgba(135, 144, 11)'
+                            }
+                        )
+                    ],
+                    
+                )
+            ],
         )
 
-    ]
+
+    ],
+    style={'background-color': 'black', 'color': 'white'}
 )
 
 # fig.show()
