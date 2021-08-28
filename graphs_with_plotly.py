@@ -12,14 +12,15 @@ barley_data_set = data.barley()
 
 app = dash.Dash(__name__)
 server = app.server
+
+#### Data exploration ####
+
 # Verifying if there are na values in the dataframe
 print(barley_data_set.isnull().values.any())
-
 print(barley_data_set[:5])
 
 # Times series
-# barley_data_set_groups = barley_data_set.groupby(['year', 'site'])['yield'].groups.keys()
-# print(barley_data_set_groups)
+
 barley_data_set_median_series = barley_data_set.groupby(['year', 'site'])[
     'yield'].apply(np.median)
 print(barley_data_set_median_series)
@@ -43,14 +44,18 @@ merge_sum_yield_df_variety_site_df = pd.merge(left=barley_variety_site_df,
                                               left_on='variety', right_on='variety')
 print(merge_sum_yield_df_variety_site_df)
 
+# Graph of the time series
 fig1 = px.line(barley_data_set_median_df, x='year',
                y=barley_data_set_median_df['Median of yield'],
                title='Median of yield by year and site',
                line_group=barley_data_set_median_df['site'],
                color=barley_data_set_median_df['site'])
 
+# Graph of the bar chart
 fig2 = px.bar(merge_sum_yield_df_variety_site_df, x='variety',
               y='sum_of_yield_by_site', color='site', title='Sum of yield by variety and site')
+
+# Website of the dashboard
 
 app.layout = html.Div(
     children=[
@@ -70,18 +75,18 @@ app.layout = html.Div(
                             id='time_series',
                             figure=fig2,
                             style={'display': 'inline-block', 'width': '50%',
-                                    'background-color':'rgba(135, 144, 11)'
-                                    }
+                                   'background-color': 'rgba(135, 144, 11)'
+                                   }
                         ),
                         dcc.Graph(
                             id='bar_chart',
                             figure=fig1,
                             style={'display': 'inline-block', 'width': '50%',
-                                    'background-color':'rgba(135, 144, 11)'
-                            }
+                                   'background-color': 'rgba(135, 144, 11)'
+                                   }
                         )
                     ],
-                    
+
                 )
             ],
         )
@@ -91,7 +96,7 @@ app.layout = html.Div(
     style={'background-color': 'black', 'color': 'white'}
 )
 
-# fig.show()
+
 
 if __name__ == '__main__':
     app.run_server(debug=True)

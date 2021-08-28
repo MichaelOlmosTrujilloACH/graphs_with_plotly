@@ -1,1 +1,1 @@
-web: gunicorn graphs_with_plotly.py:server
+web: gunicorn graphs_with_plotly:server
