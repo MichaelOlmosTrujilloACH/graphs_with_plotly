@@ -44,18 +44,33 @@ merge_sum_yield_df_variety_site_df = pd.merge(left=barley_variety_site_df,
                                               left_on='variety', right_on='variety')
 print(merge_sum_yield_df_variety_site_df)
 
+# Website of the dashboard
+
+colors = {
+    'background': '#111111',
+    'text': '#7FDBFF'
+}
 # Graph of the time series
 fig1 = px.line(barley_data_set_median_df, x='year',
-               y=barley_data_set_median_df['Median of yield'],
+               y='Median of yield',
                title='Median of yield by year and site',
-               line_group=barley_data_set_median_df['site'],
-               color=barley_data_set_median_df['site'])
+               line_group='site',
+               color='site')
+fig1.update_layout(
+    plot_bgcolor=colors['background'],
+    paper_bgcolor=colors['background'],
+    font_color=colors['text'])
 
 # Graph of the bar chart
 fig2 = px.bar(merge_sum_yield_df_variety_site_df, x='variety',
               y='sum_of_yield_by_site', color='site', title='Sum of yield by variety and site')
 
-# Website of the dashboard
+fig2.update_layout(
+    plot_bgcolor=colors['background'],
+    paper_bgcolor=colors['background'],
+    font_color=colors['text']
+)
+
 
 app.layout = html.Div(
     children=[
@@ -74,18 +89,22 @@ app.layout = html.Div(
                         dcc.Graph(
                             id='time_series',
                             figure=fig2,
-                            style={'display': 'inline-block', 'width': '50%',
+                            style={'display': 'inline-block', 'width': '60%',
                                    'background-color': 'rgba(135, 144, 11)'
                                    }
                         ),
                         dcc.Graph(
                             id='bar_chart',
                             figure=fig1,
-                            style={'display': 'inline-block', 'width': '50%',
-                                   'background-color': 'rgba(135, 144, 11)'
+                            style={'display': 'inline-block', 'width': '40%',
+                                   'background-color': '#7FDBFF'
                                    }
                         )
                     ],
+                    style={
+                        'width': '70%',
+                        'margin': '0 auto'
+                    }
 
                 )
             ],
@@ -95,7 +114,6 @@ app.layout = html.Div(
     ],
     style={'background-color': 'black', 'color': 'white'}
 )
-
 
 
 if __name__ == '__main__':
